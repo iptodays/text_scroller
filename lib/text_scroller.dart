@@ -9,8 +9,7 @@ class TextScrollController {
   _TextScrollerState state;
   add(String text) {
     if (state == null) return;
-    state.texts.add(text);
-    state.update();
+    state.update(text);
   }
 }
 
@@ -22,8 +21,9 @@ class TextScroller extends StatefulWidget {
     this.lineHeight = 24,
     this.style = const TextStyle(fontSize: 12),
     this.backgroundColor = Colors.grey,
-    this.scrollSpeed = const Duration(milliseconds: 200),
+    this.scrollSpeed = const Duration(milliseconds: 500),
     this.textRemovalSpeed = const Duration(seconds: 10),
+    this.pushUp = false,
   }) {
     // controller.state = _state;
   }
@@ -52,6 +52,9 @@ class TextScroller extends StatefulWidget {
   /// [textRemovalSpeed] sets how long it should wait until it removes the text.
   final Duration textRemovalSpeed;
 
+  /// [pushUp] pushes up texts if there is empty lines above.
+  final bool pushUp;
+
   @override
   _TextScrollerState createState() => _TextScrollerState();
 }
@@ -61,16 +64,30 @@ class _TextScrollerState extends State<TextScroller> {
   List<String> texts = [];
 
   final listController = ScrollController();
-  update() {
+  update(String text) {
     if (mounted) {
+      int len = texts.length;
+      texts.add(text);
       setState(() {});
-      Timer(
-          Duration(milliseconds: 50),
-          () => listController.animateTo(
-              listController.position.maxScrollExtent,
-              duration: widget.scrollSpeed,
-              curve: Curves.ease));
+      scrollUp();
+
+      Timer(widget.textRemovalSpeed, () {
+        if (mounted) {
+          if (widget.pushUp)
+            texts.removeAt(0);
+          else
+            texts[len] = '';
+          setState(() {});
+        }
+      });
     }
+  }
+
+  scrollUp() {
+    Timer(
+        Duration(milliseconds: 50),
+        () => listController.animateTo(listController.position.maxScrollExtent,
+            duration: widget.scrollSpeed, curve: Curves.ease));
   }
 
   @override
@@ -128,35 +145,29 @@ class TextSticker extends StatefulWidget {
 }
 
 class _TextStickerState extends State<TextSticker> {
-  String text;
-
   @override
   void initState() {
     super.initState();
-
-    text = widget.text;
-    Timer(widget.textRemovalSpeed, () {
-      text = '';
-      if (mounted) setState(() {});
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      constraints: BoxConstraints(maxWidth: widget.width),
-      padding: EdgeInsets.fromLTRB(6, 2, 6, 2),
-      decoration: BoxDecoration(
-        color: text == '' ? Colors.transparent : widget.backgroundColor,
-        borderRadius: BorderRadius.circular(25),
-      ),
-      child: Text(
-        text,
-        style: widget.style,
-        textAlign: TextAlign.right,
-        overflow: TextOverflow.ellipsis,
-        maxLines: 1,
-      ),
-    );
+    return widget.text == ''
+        ? SizedBox.shrink()
+        : Container(
+            constraints: BoxConstraints(maxWidth: widget.width),
+            padding: EdgeInsets.fromLTRB(6, 2, 6, 2),
+            decoration: BoxDecoration(
+              color: widget.backgroundColor,
+              borderRadius: BorderRadius.circular(25),
+            ),
+            child: Text(
+              widget.text,
+              style: widget.style,
+              textAlign: TextAlign.right,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
+          );
   }
 }
