@@ -8,12 +8,9 @@ import 'package:flutter/rendering.dart';
 class TextScrollController {
   _TextScrollerState state;
   add(String text) {
+    if (state == null) return;
     state.texts.add(text);
     state.update();
-    state.listController.animateTo(
-        state.listController.position.maxScrollExtent,
-        duration: state.widget.scrollSpeed,
-        curve: Curves.ease);
   }
 }
 
@@ -28,9 +25,8 @@ class TextScroller extends StatefulWidget {
     this.scrollSpeed = const Duration(milliseconds: 200),
     this.textRemovalSpeed = const Duration(seconds: 10),
   }) {
-    controller.state = _state;
+    // controller.state = _state;
   }
-  final _TextScrollerState _state = _TextScrollerState();
 
   /// controller to add more texts.
   final TextScrollController controller;
@@ -57,7 +53,7 @@ class TextScroller extends StatefulWidget {
   final Duration textRemovalSpeed;
 
   @override
-  _TextScrollerState createState() => _state;
+  _TextScrollerState createState() => _TextScrollerState();
 }
 
 class _TextScrollerState extends State<TextScroller> {
@@ -66,7 +62,21 @@ class _TextScrollerState extends State<TextScroller> {
 
   final listController = ScrollController();
   update() {
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+      Timer(
+          Duration(milliseconds: 50),
+          () => listController.animateTo(
+              listController.position.maxScrollExtent,
+              duration: widget.scrollSpeed,
+              curve: Curves.ease));
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.state = this;
   }
 
   @override
@@ -127,7 +137,7 @@ class _TextStickerState extends State<TextSticker> {
     text = widget.text;
     Timer(widget.textRemovalSpeed, () {
       text = '';
-      setState(() {});
+      if (mounted) setState(() {});
     });
   }
 
