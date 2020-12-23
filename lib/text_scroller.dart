@@ -63,6 +63,8 @@ class _TextScrollerState extends State<TextScroller> {
   bool animate = false;
   List<String> texts = [];
 
+  int removalCount = 0;
+
   final listController = ScrollController();
   update(String text) {
     if (mounted) {
@@ -77,6 +79,10 @@ class _TextScrollerState extends State<TextScroller> {
             texts.removeAt(0);
           else
             texts[len] = '';
+
+          removalCount++;
+
+          print('text.length: ${texts.length}, removalCount: $removalCount');
           setState(() {});
         }
       });
@@ -98,32 +104,34 @@ class _TextScrollerState extends State<TextScroller> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: widget.width,
-      height: widget.height,
-      child: ListView(
-        controller: listController,
-        itemExtent: widget.lineHeight,
-        addAutomaticKeepAlives: false,
-        children: [
-          for (final text in texts)
-            Stack(
+    return removalCount == texts.length
+        ? SizedBox.shrink()
+        : Container(
+            width: widget.width,
+            height: widget.height,
+            child: ListView(
+              controller: listController,
+              itemExtent: widget.lineHeight,
+              addAutomaticKeepAlives: false,
               children: [
-                Positioned(
-                  right: 0,
-                  child: TextSticker(
-                    text,
-                    backgroundColor: widget.backgroundColor,
-                    style: widget.style,
-                    width: widget.width,
-                    textRemovalSpeed: widget.textRemovalSpeed,
-                  ),
-                ),
+                for (final text in texts)
+                  Stack(
+                    children: [
+                      Positioned(
+                        right: 0,
+                        child: TextSticker(
+                          text,
+                          backgroundColor: widget.backgroundColor,
+                          style: widget.style,
+                          width: widget.width,
+                          textRemovalSpeed: widget.textRemovalSpeed,
+                        ),
+                      ),
+                    ],
+                  )
               ],
-            )
-        ],
-      ),
-    );
+            ),
+          );
   }
 }
 

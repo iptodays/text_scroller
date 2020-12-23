@@ -12,10 +12,11 @@ textScrollController.add('So, This is no. $c');
 
 TextScroller(
   controller: textScrollController,
-  backgroundColor: Color(0x88cccccc),
-  style: TextStyle(
-    color: Colors.blueAccent,
-    fontSize: 11,
-  ),
-),
+  style: TextStyle(fontSize: 11),
+  height: 242,
+  width: 260,
+  lineHeight: 20,
+  backgroundColor: Color(0x44cccccc),
+  textRemovalSpeed: Duration(seconds: 3),
+);
 ```
