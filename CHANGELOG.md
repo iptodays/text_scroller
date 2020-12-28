@@ -1,3 +1,7 @@
+## [0.0.5] Removing console print
+
+- Removing console print
+
 ## [0.0.4] Shrink widget
 
 - The widget shrinks out when there is no more texts to display. This let user touch element beneath the scroller widget.
