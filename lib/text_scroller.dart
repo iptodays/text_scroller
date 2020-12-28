@@ -82,7 +82,7 @@ class _TextScrollerState extends State<TextScroller> {
 
           removalCount++;
 
-          print('text.length: ${texts.length}, removalCount: $removalCount');
+          // print('text.length: ${texts.length}, removalCount: $removalCount');
           setState(() {});
         }
       });
