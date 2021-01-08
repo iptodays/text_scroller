@@ -7,7 +7,7 @@ import 'package:flutter/rendering.dart';
 
 class TextScrollController {
   _TextScrollerState state;
-  add(String text) {
+  add(Widget text) {
     if (state == null) return;
     state.update(text);
   }
@@ -61,12 +61,12 @@ class TextScroller extends StatefulWidget {
 
 class _TextScrollerState extends State<TextScroller> {
   bool animate = false;
-  List<String> texts = [];
+  List<Widget> texts = [];
 
   int removalCount = 0;
 
   final listController = ScrollController();
-  update(String text) {
+  update(Widget text) {
     if (mounted) {
       int len = texts.length;
       texts.add(text);
@@ -78,7 +78,7 @@ class _TextScrollerState extends State<TextScroller> {
           if (widget.pushUp)
             texts.removeAt(0);
           else
-            texts[len] = '';
+            texts[len] = null;
 
           removalCount++;
 
@@ -121,9 +121,9 @@ class _TextScrollerState extends State<TextScroller> {
                         right: 0,
                         child: TextSticker(
                           text,
-                          backgroundColor: widget.backgroundColor,
-                          style: widget.style,
-                          width: widget.width,
+                          // backgroundColor: widget.backgroundColor,
+                          // style: widget.style,
+                          // width: widget.width,
                           textRemovalSpeed: widget.textRemovalSpeed,
                         ),
                       ),
@@ -138,15 +138,15 @@ class _TextScrollerState extends State<TextScroller> {
 class TextSticker extends StatefulWidget {
   TextSticker(
     this.text, {
-    this.style,
-    this.backgroundColor,
-    this.width,
+    // this.style,
+    // this.backgroundColor,
+    // this.width,
     this.textRemovalSpeed,
   });
-  final String text;
-  final TextStyle style;
-  final Color backgroundColor;
-  final double width;
+  final Widget text;
+  // final TextStyle style;
+  // final Color backgroundColor;
+  // final double width;
   final Duration textRemovalSpeed;
   @override
   _TextStickerState createState() => _TextStickerState();
@@ -160,22 +160,22 @@ class _TextStickerState extends State<TextSticker> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.text == ''
-        ? SizedBox.shrink()
-        : Container(
-            constraints: BoxConstraints(maxWidth: widget.width),
-            padding: EdgeInsets.fromLTRB(6, 2, 6, 2),
-            decoration: BoxDecoration(
-              color: widget.backgroundColor,
-              borderRadius: BorderRadius.circular(25),
-            ),
-            child: Text(
-              widget.text,
-              style: widget.style,
-              textAlign: TextAlign.right,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-            ),
-          );
+    return widget.text == null ? SizedBox.shrink() : widget.text;
+
+    // Container(
+    //     constraints: BoxConstraints(maxWidth: widget.width),
+    //     padding: EdgeInsets.fromLTRB(6, 2, 6, 2),
+    //     decoration: BoxDecoration(
+    //       color: widget.backgroundColor,
+    //       borderRadius: BorderRadius.circular(25),
+    //     ),
+    //     child: Text(
+    //       widget.text,
+    //       style: widget.style,
+    //       textAlign: TextAlign.right,
+    //       overflow: TextOverflow.ellipsis,
+    //       maxLines: 1,
+    //     ),
+    //   );
   }
 }

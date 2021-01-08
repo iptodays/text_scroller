@@ -42,13 +42,13 @@ class _MyHomePageState extends State<MyHomePage> {
       if (c > 10 && c < 30) {
         if (Random().nextInt(5) != 0) return;
 
-        textScrollController.add('Okay, then, This is no. $c');
+        textScrollController.add(Text('Okay, then, This is no. $c'));
       } else {
         if (Random().nextBool()) {
           textScrollController
-              .add('So, what if the line is very long. This is no. $c');
+              .add(Text('So, what if the line is very long. This is no. $c'));
         } else {
-          textScrollController.add('So, This is no. $c');
+          textScrollController.add(Text('So, This is no. $c'));
         }
       }
     });
