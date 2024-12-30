@@ -1,3 +1,12 @@
+/*
+ * @Author: A kingiswinter@gmail.com
+ * @Date: 2024-12-30 10:50:24
+ * @LastEditors: A kingiswinter@gmail.com
+ * @LastEditTime: 2024-12-30 10:52:30
+ * @FilePath: /text_scroller/example/lib/main.dart
+ * 
+ * Copyright (c) 2024 by A kingiswinter@gmail.com, All Rights Reserved.
+ */
 import 'dart:async';
 import 'dart:math';
 
@@ -23,8 +32,9 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
   final String title;
+
+  const MyHomePage({super.key, required this.title});
 
   @override
   _MyHomePageState createState() => _MyHomePageState();

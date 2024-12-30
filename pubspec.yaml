@@ -1,11 +1,10 @@
 name: text_scroller
 description: A highly customizable text scrolling widget. You can customize all the aspects.
-version: 0.0.5
-author:
-homepage:
+version: 1.0.0
+homepage: https://github.com/iptodays/text_scroller
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ^3.6.0
   flutter: ">=1.17.0"
 
 dependencies:

@@ -3,19 +3,17 @@ library text_scroller;
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 class TextScrollController {
-  _TextScrollerState state;
+  late _TextScrollerState state;
   add(Widget text) {
-    if (state == null) return;
     state.update(text);
   }
 }
 
 class TextScroller extends StatefulWidget {
   TextScroller({
-    @required this.controller,
+    required this.controller,
     this.width = 200,
     this.height = 82,
     this.lineHeight = 24,
@@ -61,7 +59,7 @@ class TextScroller extends StatefulWidget {
 
 class _TextScrollerState extends State<TextScroller> {
   bool animate = false;
-  List<Widget> texts = [];
+  List<Widget?> texts = [];
 
   int removalCount = 0;
 
@@ -120,10 +118,7 @@ class _TextScrollerState extends State<TextScroller> {
                       Positioned(
                         right: 0,
                         child: TextSticker(
-                          text,
-                          // backgroundColor: widget.backgroundColor,
-                          // style: widget.style,
-                          // width: widget.width,
+                          text!,
                           textRemovalSpeed: widget.textRemovalSpeed,
                         ),
                       ),
@@ -141,9 +136,9 @@ class TextSticker extends StatefulWidget {
     // this.style,
     // this.backgroundColor,
     // this.width,
-    this.textRemovalSpeed,
+    required this.textRemovalSpeed,
   });
-  final Widget text;
+  final Widget? text;
   // final TextStyle style;
   // final Color backgroundColor;
   // final double width;
@@ -160,7 +155,7 @@ class _TextStickerState extends State<TextSticker> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.text == null ? SizedBox.shrink() : widget.text;
+    return widget.text ?? SizedBox.shrink();
 
     // Container(
     //     constraints: BoxConstraints(maxWidth: widget.width),

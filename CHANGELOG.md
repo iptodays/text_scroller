@@ -1,3 +1,7 @@
+## [1.0.0] upgrade to null safety
+
+- upgrade to null safety
+
 ## [0.0.5] Removing console print
 
 - Removing console print
